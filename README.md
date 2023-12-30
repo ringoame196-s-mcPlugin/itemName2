@@ -26,3 +26,5 @@ configure<BukkitPluginDescription> {
 ### テストサーバーの起動 `buildAndLaunchServer`
 
 `:25565` でテストサーバーを起動します。
+
+https://github.com/Ringoame196/itemname のバージョンでアップ版
