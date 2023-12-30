@@ -43,14 +43,10 @@ configure<BukkitPluginDescription> {
     version = gitVersion()
     apiVersion = "1." + pluginVersion.split(".")[1]
     commands {
-        register("test1111") {
-            description = "This is a test command!"
-            aliases = listOf("t")
-            permission = "testplugin.test"
-            usage = "Just run the command!"
-            //。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。 permissionMessage = "You may not test this command!"
+        register("itemName") {
+            description = "アイテムの名前や説明欄を変更をするコマンド"
+            
         }
-        //。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。 ...
     }
 }
 
