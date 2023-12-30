@@ -24,6 +24,7 @@ class ItemName : CommandExecutor, TabCompleter {
         if (args.isEmpty() || args.size < 2) {
             return false
         }
+        val menu = args[0]
         val inputText = args[1]
         val processMap = mutableMapOf(
             "display" to { itemManager.setDisplay(meta, inputText) },
@@ -37,7 +38,6 @@ class ItemName : CommandExecutor, TabCompleter {
                 }
             }
         )
-        val menu = args[0]
         processMap[menu]?.invoke()
         itemManager.itemSetting(player, meta, menu, inputText)
         return true
