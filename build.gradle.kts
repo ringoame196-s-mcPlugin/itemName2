@@ -45,7 +45,14 @@ configure<BukkitPluginDescription> {
     commands {
         register("itemName") {
             description = "アイテムの名前や説明欄を変更をするコマンド"
-            
+            usage = "/itemName <メニュー> <登録したい名前> (<登録したい名前2>).."
+            permission = "itemName.commandExecution"
+        }
+    }
+    permissions{
+        register("itemName.commandExecution") {
+            description = "itemNameコマンドの実行を許可する"
+            default = BukkitPluginDescription.Permission.Default.OP // TRUE, FALSE, OP or NOT_OP
         }
     }
 }
