@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
 
-class itemName : CommandExecutor, TabCompleter {
+class ItemName : CommandExecutor, TabCompleter {
     private val itemManager = ItemManager()
     override fun onCommand(player: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if (player !is Player) {
@@ -33,17 +33,13 @@ class itemName : CommandExecutor, TabCompleter {
                     val customModelData = inputText.toInt()
                     itemManager.setCustomModelData(meta, customModelData)
                 } catch (e: NumberFormatException) {
-                    playerClass.sendErrorMessage("数字を入力してください")
+                    itemManager.setCustomModelData(meta, null)
                 }
             }
         )
         val menu = args[0]
-        if (processMap[menu] == null) {
-            playerClass.sendErrorMessage("引数が間違っています")
-        } else {
-            processMap[menu]?.invoke()
-        }
-        itemManager.itemSetting(player, meta, menu)
+        processMap[menu]?.invoke()
+        itemManager.itemSetting(player, meta, menu, inputText)
         return true
     }
 
@@ -51,7 +47,7 @@ class itemName : CommandExecutor, TabCompleter {
         if (player !is Player) { return mutableListOf() }
         return when (args.size) {
             1 -> mutableListOf("display", "lore", "customModelData")
-            in 2..Int.MAX_VALUE -> (itemManager.acquisitionDefaultName(player, args)?.plus("!reset"))?.toMutableList() ?: mutableListOf()
+            in 2..Int.MAX_VALUE -> (itemManager.acquisitionDefaultName(player, args)?.plus(itemManager.reset))?.toMutableList() ?: mutableListOf()
             else -> mutableListOf()
         }
     }

@@ -6,6 +6,7 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.meta.ItemMeta
 
 class ItemManager {
+    val reset = "!reset"
     fun acquisitionDefaultName(player: Player, typeList: Array<out String>): MutableList<String>? {
         val playerItem = player.inventory.itemInMainHand
         val meta = playerItem.itemMeta ?: return mutableListOf()
@@ -16,44 +17,37 @@ class ItemManager {
             else -> mutableListOf("${ChatColor.RED}引数が間違っています")
         }
     }
-    fun setDisplay(meta: ItemMeta, displayName: String?): ItemMeta {
-        meta.setDisplayName(change(displayName ?: ""))
-        return meta
+    fun setDisplay(meta: ItemMeta, displayName: String?) {
+        meta.setDisplayName(changeColorCode(displayName ?: ""))
+        if (displayName == reset) {
+            meta.setDisplayName(null)
+        }
     }
-    fun setLore(meta: ItemMeta, oldLore: Array<out String>?): ItemMeta {
+    fun setLore(meta: ItemMeta, oldLore: Array<out String>) {
         val newLore = mutableListOf<String>()
-        if (oldLore != null) {
-            for (i in 1 until oldLore.size) {
-                newLore.add(change(oldLore[i]))
-            }
+        for (i in 1 until oldLore.size) {
+            newLore.add(changeColorCode(oldLore[i]))
         }
         meta.lore = newLore
-        return meta
+        if (oldLore[1] == reset) {
+            meta.lore = null
+        }
     }
-    fun setCustomModelData(meta: ItemMeta, customModule: Int?): ItemMeta {
+    fun setCustomModelData(meta: ItemMeta, customModule: Int?) {
         meta.setCustomModelData(customModule)
-        return meta
-    }
-    private fun change(text: String): String {
-        var newText = text
-        newText = changeColorCode(newText)
-        newText = changeReset(newText)
-        return newText
     }
     private fun changeColorCode(text: String): String {
         return text.replace("&", "§")
     }
-    private fun changeReset(text: String): String {
-        return if (text == "!reset") { "" } else { text }
-    }
-    fun itemSetting(player: Player, meta: ItemMeta, menu: String) {
+    fun itemSetting(player: Player, meta: ItemMeta, menu: String, inputText: String) {
         val menuMap = mapOf(
             "display" to "アイテム名",
             "lore" to "説明",
             "customModelData" to "カスタムモデルデータ"
         )
+        val action = if (inputText == "!reset") { "${ChatColor.RED}リセット" } else { "変更" }
         player.inventory.itemInMainHand.setItemMeta(meta)
         player.playSound(player, Sound.BLOCK_ANVIL_USE, 1f, 1f)
-        player.sendMessage("${ChatColor.YELLOW}[itemName] ${menuMap[menu]}を変更しました")
+        player.sendMessage("${ChatColor.YELLOW}[itemName] ${menuMap[menu]}情報を${action}しました")
     }
 }
