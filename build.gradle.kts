@@ -22,6 +22,8 @@ repositories {
     mavenCentral()
     maven(url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven(url = "https://oss.sonatype.org/content/groups/public/")
+    maven(url = "https://jitpack.io")
+    maven(url ="https://maven.enginehub.org/repo/")
 }
 
 val shadowImplementation: Configuration by configurations.creating
@@ -30,24 +32,44 @@ configurations["implementation"].extendsFrom(shadowImplementation)
 dependencies {
     shadowImplementation(kotlin("stdlib"))
     compileOnly("org.spigotmc:spigot-api:$pluginVersion-R0.1-SNAPSHOT")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.0")
+    compileOnly("com.github.MilkBowl:VaultAPI:1.7")
+    implementation("com.sk89q.worldguard:worldguard-bukkit:7.0.1")
+    compileOnly ("com.sk89q.worldguard:worldguard-bukkit:VERSION")
 }
 
 configure<BukkitPluginDescription> {
-    main = "@group@.Main"
+    main = "com.github.Ringoame196.Main"
     version = gitVersion()
     apiVersion = "1." + pluginVersion.split(".")[1]
+    commands {
+        register("test1111") {
+            description = "This is a test command!"
+            aliases = listOf("t")
+            permission = "testplugin.test"
+            usage = "Just run the command!"
+            //。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。 permissionMessage = "You may not test this command!"
+        }
+        //。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。 ...
+    }
 }
 
 tasks.withType<ShadowJar> {
     configurations = listOf(shadowImplementation)
     archiveClassifier.set("")
-    relocate("kotlin", "@group@.libs.kotlin")
-    relocate("org.intellij.lang.annotations", "@group@.libs.org.intellij.lang.annotations")
-    relocate("org.jetbrains.annotations", "@group@.libs.org.jetbrains.annotations")
+    relocate("kotlin", "com.github.Ringoame196.libs.kotlin")
+    relocate("org.intellij.lang.annotations", "com.github.Ringoame196.libs.org.intellij.lang.annotations")
+    relocate("org.jetbrains.annotations", "com.github.Ringoame196.libs.org.jetbrains.annotations")
 }
 
 tasks.named("build") {
     dependsOn("shadowJar")
+    doFirst {
+        copy {
+            from(buildDir.resolve("libs/${project.name}.jar"))
+            into("D:/デスクトップ/Twitterサーバー/plugins")
+        }
+    }
 }
 
 task<LaunchMinecraftServerTask>("buildAndLaunchServer") {
@@ -65,5 +87,6 @@ task<LaunchMinecraftServerTask>("buildAndLaunchServer") {
     nogui.set(true)
     agreeEula.set(true)
 }
+
 
 task<SetupTask>("setup")
