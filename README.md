@@ -27,4 +27,3 @@ configure<BukkitPluginDescription> {
 
 `:25565` でテストサーバーを起動します。
 
-https://github.com/Ringoame196/itemname のバージョンでアップ版
