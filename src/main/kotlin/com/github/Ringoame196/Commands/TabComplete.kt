@@ -20,8 +20,8 @@ class TabComplete : TabCompleter {
         val tabList = mutableListOf("!reset")
         val itemMeta = item.itemMeta ?: return tabList
         when (type) {
-            "display" -> tabList.add(itemMeta.displayName.replace("§", "$"))
-            "lore" -> tabList.add(acquisitionLore(itemMeta, number).replace("§", "$"))
+            "display" -> tabList.add(itemMeta.displayName.replace("§", "&")) // 色変え対応
+            "lore" -> tabList.add(acquisitionLore(itemMeta, number).replace("§", "&")) // 色変え対応
             "customModelData" -> tabList.add(acquisitionCustomModelData(itemMeta))
         }
         return tabList
