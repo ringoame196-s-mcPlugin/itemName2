@@ -7,7 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin
 class Main : JavaPlugin() {
     override fun onEnable() {
         super.onEnable()
-        val command = getCommand("itemName")
+        val command = getCommand("itemname")
         command!!.setExecutor(Command())
         command.tabCompleter = TabComplete()
     }
