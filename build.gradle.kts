@@ -45,7 +45,7 @@ configure<BukkitPluginDescription> {
     commands {
         register("itemName") {
             description = "アイテムの名前や説明欄を変更をするコマンド"
-            usage = "/itemName <メニュー> <登録したい名前> (<登録したい名前2>).."
+            usage = "/itemName <種類> <登録したい名前> (<登録したい名前2>).."
             permission = "itemName.commandExecution"
         }
     }

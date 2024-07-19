@@ -9,7 +9,7 @@ import org.bukkit.inventory.meta.ItemMeta
 
 class TabComplete : TabCompleter {
     override fun onTabComplete(player: CommandSender, command: Command, label: String, args: Array<out String>): MutableList<String> {
-        if (player !is Player) { return mutableListOf() }
+        if (player !is Player) { return mutableListOf() } // プレイヤー以外 処理をしない
         val playerItem = player.inventory.itemInMainHand
         return when (args.size) {
             1 -> mutableListOf("display", "lore", "customModelData")
@@ -28,18 +28,18 @@ class TabComplete : TabCompleter {
     }
 
     private fun acquisitionCustomModelData(itemMeta: ItemMeta): String {
-        return if (itemMeta.hasCustomModelData()) {
+        return if (itemMeta.hasCustomModelData()) { // カスタムモデルデータが設定されているなら 設定されている値を返す
             itemMeta.customModelData.toString()
-        } else {
+        } else { // カスタムモデルデータが未設定なら 空を返す
             ""
         }
     }
     private fun acquisitionLore(itemMeta: ItemMeta, number: Int): String {
-        val lore = itemMeta.lore ?: return ""
-        return if (lore.size <= number) {
+        val lore = itemMeta.lore ?: return "" // loreが設定されていないなら空を返す
+        return if (lore.size <= number) { // 求められている値が未設定の場合 空を返す
             ""
         } else {
-            lore[number]
+            lore[number] // 既に設定されているものがあれば それを返す
         }
     }
 }

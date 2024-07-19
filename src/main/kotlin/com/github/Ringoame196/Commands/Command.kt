@@ -1,13 +1,15 @@
 package com.github.Ringoame196.Commands
 
-import com.github.Ringoame196.ItemManager
-import com.github.Ringoame196.PlayerManager
+import com.github.Ringoame196.manager.ItemManager
+import com.github.Ringoame196.manager.PlayerManager
 import org.bukkit.ChatColor
 import org.bukkit.Material
+import org.bukkit.Sound
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import org.bukkit.inventory.meta.ItemMeta
 
 class Command : CommandExecutor {
     private val itemManager = ItemManager()
@@ -38,20 +40,29 @@ class Command : CommandExecutor {
         }
         val category = args[0]
         val inputText = args[1]
-        val processMap = mutableMapOf(
-            "display" to { itemManager.setDisplay(meta, inputText) },
-            "lore" to { itemManager.setLore(meta, args) },
-            "customModelData" to {
-                try {
-                    val customModelData = inputText.toInt()
-                    itemManager.setCustomModelData(meta, customModelData)
-                } catch (e: NumberFormatException) {
-                    itemManager.setCustomModelData(meta, null)
-                }
-            }
-        )
-        processMap[category]?.invoke()
-        itemManager.itemSetting(player, meta, category, inputText)
+
+        when (category) {
+            "display" -> itemManager.setDisplay(meta, inputText)
+            "lore" -> itemManager.setLore(meta, args)
+            "customModelData" -> itemManager.setCustomModelData(meta, inputText)
+        }
+
+        replaceItemMeta(player, meta) // アイテム情報を置き換える
+        sendChangeMessage(player, category, inputText) // 変更内容を表示
         return true
+    }
+
+    private fun replaceItemMeta(player: Player, meta: ItemMeta) {
+        player.inventory.itemInMainHand.setItemMeta(meta)
+    }
+    private fun sendChangeMessage(player: Player, category: String, inputText: String) {
+        val categoryMap = mapOf(
+            "display" to "アイテム名",
+            "lore" to "説明",
+            "customModelData" to "カスタムモデルデータ"
+        )
+        val action = if (inputText == "!reset") { "${ChatColor.RED}リセット" } else { "変更" }
+        player.playSound(player, Sound.BLOCK_ANVIL_USE, 1f, 1f)
+        player.sendMessage("${ChatColor.YELLOW}[itemName] ${categoryMap[category]}情報を${action}しました")
     }
 }
