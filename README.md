@@ -1,20 +1,22 @@
-# itenName2
+# itemName2
 
-## プラグイン説明
-手持ちのアイテムの名前、説明欄、カスタムモデルデータを1コマンドで変更することが可能 <br>
-&で色つけ可能に
+## plugin.yml
 
-## コマンド
-/itemname [種類] [入力]
+ビルド時に自動生成されます。[build.gradle.kts](build.gradle.kts) の以下の箇所で設定できます。
+書き方は https://github.com/Minecrell/plugin-yml の Bukkit kotlin-dsl を見てください。
 
-## 使い方
-変更したいアイテムを手持ちに持ち /itemname [種類] [入力]で変更
+```kotlin
+configure<BukkitPluginDescription> {
+    // 内容
+}
+```
 
-## 開発環境
-- Minecraft Version : 1.20.1
-- Kotlin Version : 1.6.10
+## タスク
 
-## プロジェクト情報
-- プロジェクトパス : Ringoame196/itemName2.git
-- 開発者名 : Ringoame196
-- 開発開始日 : 2024-07-18
+### プラグインのビルド `build`
+
+`build/libs` フォルダに `.jar` を生成します。
+
+### テストサーバーの起動 `buildAndLaunchServer`
+
+`:25565` でテストサーバーを起動します。

@@ -5,10 +5,9 @@ import org.bukkit.Material
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
-import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
 
-class ItemName : CommandExecutor, TabCompleter {
+class Command : CommandExecutor {
     private val itemManager = ItemManager()
     override fun onCommand(player: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if (player !is Player) {
@@ -41,14 +40,5 @@ class ItemName : CommandExecutor, TabCompleter {
         processMap[menu]?.invoke()
         itemManager.itemSetting(player, meta, menu, inputText)
         return true
-    }
-
-    override fun onTabComplete(player: CommandSender, command: Command, label: String, args: Array<out String>): MutableList<String> {
-        if (player !is Player) { return mutableListOf() }
-        return when (args.size) {
-            1 -> mutableListOf("display", "lore", "customModelData")
-            in 2..Int.MAX_VALUE -> (itemManager.acquisitionDefaultName(player, args)?.plus(itemManager.reset))?.toMutableList() ?: mutableListOf()
-            else -> mutableListOf()
-        }
     }
 }
