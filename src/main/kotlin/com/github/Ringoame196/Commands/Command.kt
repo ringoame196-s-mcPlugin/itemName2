@@ -1,6 +1,8 @@
 package com.github.Ringoame196.Commands
 
 import com.github.Ringoame196.ItemManager
+import com.github.Ringoame196.PlayerManager
+import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
@@ -10,20 +12,31 @@ import org.bukkit.entity.Player
 class Command : CommandExecutor {
     private val itemManager = ItemManager()
     override fun onCommand(player: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
+        val playerManager = PlayerManager()
+        // プレイヤー以外実行不可
         if (player !is Player) {
-            return false
+            player.sendMessage("${ChatColor.RED}プレイヤー以外実行することはできません")
+            return true
         }
-        val playerClass = com.github.Ringoame196.Player(player)
-        val playerItem = player.inventory.itemInMainHand
+
+        val playerItem = player.inventory.itemInMainHand // メインハンドに持っているアイテム
         if (playerItem.type == Material.AIR) {
-            playerClass.sendErrorMessage("空気以外を持ってください")
-            return false
+            playerManager.sendErrorMessage("空気 または 非対応のアイテムです", player)
+            return true
         }
-        val meta = playerItem.itemMeta ?: return false
+
+        val meta = playerItem.itemMeta
+        // metaがnullだった場合
+        if (meta == null) {
+            playerManager.sendErrorMessage("アイテム情報を取得できませんでした", player)
+            return true
+        }
+
+        // 入力が不十分だった場合
         if (args.isEmpty() || args.size < 2) {
             return false
         }
-        val menu = args[0]
+        val category = args[0]
         val inputText = args[1]
         val processMap = mutableMapOf(
             "display" to { itemManager.setDisplay(meta, inputText) },
@@ -37,8 +50,8 @@ class Command : CommandExecutor {
                 }
             }
         )
-        processMap[menu]?.invoke()
-        itemManager.itemSetting(player, meta, menu, inputText)
+        processMap[category]?.invoke()
+        itemManager.itemSetting(player, meta, category, inputText)
         return true
     }
 }
