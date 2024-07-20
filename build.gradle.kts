@@ -32,10 +32,6 @@ configurations["implementation"].extendsFrom(shadowImplementation)
 dependencies {
     shadowImplementation(kotlin("stdlib"))
     compileOnly("org.spigotmc:spigot-api:$pluginVersion-R0.1-SNAPSHOT")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.0")
-    compileOnly("com.github.MilkBowl:VaultAPI:1.7")
-    implementation("com.sk89q.worldguard:worldguard-bukkit:7.0.1")
-    compileOnly ("com.sk89q.worldguard:worldguard-bukkit:VERSION")
 }
 
 configure<BukkitPluginDescription> {
