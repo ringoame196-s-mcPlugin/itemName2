@@ -3,6 +3,8 @@ import dev.s7a.gradle.minecraft.server.tasks.LaunchMinecraftServerTask
 import dev.s7a.gradle.minecraft.server.tasks.LaunchMinecraftServerTask.JarUrl
 import groovy.lang.Closure
 import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
+import java.net.HttpURLConnection
+import java.net.URL
 
 plugins {
     kotlin("jvm") version "1.6.10"
@@ -63,10 +65,38 @@ tasks.withType<ShadowJar> {
 
 tasks.named("build") {
     dependsOn("shadowJar")
-    doFirst {
-        copy {
-            from(buildDir.resolve("libs/${project.name}.jar"))
-            into("D:/デスクトップ/Twitterサーバー/plugins")
+    val copyFilePath = "D:/デスクトップ/Twitterサーバー/plugins"
+    val copyFile = File(copyFilePath)
+    if (copyFile.exists() && copyFile.isDirectory) {
+        doFirst {
+            copy {
+                from(buildDir.resolve("libs/${project.name}.jar"))
+                into(copyFile)
+            }
+        }
+        doLast {
+            // APIリクエストを行う
+            val apiUrl = "http://localhost:25585/plugin?name=${project.name}"
+            val url = URL(apiUrl)
+            val connection = url.openConnection() as HttpURLConnection
+
+            try {
+                connection.requestMethod = "GET"
+                connection.connect()
+
+                // レスポンスコードを確認
+                if (connection.responseCode == HttpURLConnection.HTTP_OK) {
+                    val response = connection.inputStream.bufferedReader().use { it.readText() }
+                    println("API Response: $response")
+                } else {
+                    println("Failed to get response: ${connection.responseCode}")
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                println("Error during API request: ${e.message}")
+            } finally {
+                connection.disconnect()
+            }
         }
     }
 }
