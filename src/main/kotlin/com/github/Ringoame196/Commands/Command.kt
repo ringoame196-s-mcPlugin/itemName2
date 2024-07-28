@@ -1,7 +1,7 @@
 package com.github.Ringoame196.Commands
 
-import com.github.Ringoame196.Manager.ItemManager
-import com.github.Ringoame196.Manager.PlayerManager
+import com.github.Ringoame196.manager.ItemManager
+import com.github.Ringoame196.manager.PlayerManager
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.Sound

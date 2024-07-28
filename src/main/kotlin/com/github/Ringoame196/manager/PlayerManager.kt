@@ -1,4 +1,4 @@
-package com.github.Ringoame196.Manager
+package com.github.Ringoame196.manager
 
 import net.md_5.bungee.api.ChatColor
 import org.bukkit.Sound

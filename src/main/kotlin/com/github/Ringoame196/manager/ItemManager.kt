@@ -1,4 +1,4 @@
-package com.github.Ringoame196.Manager
+package com.github.Ringoame196.manager
 
 import org.bukkit.inventory.meta.ItemMeta
 
