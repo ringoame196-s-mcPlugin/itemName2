@@ -1,4 +1,4 @@
-package com.github.Ringoame196.Commands
+package com.github.Ringoame196.commands
 
 import com.github.Ringoame196.manager.ItemManager
 import com.github.Ringoame196.manager.PlayerManager
