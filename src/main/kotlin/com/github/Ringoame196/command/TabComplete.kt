@@ -1,4 +1,4 @@
-package com.github.Ringoame196.Commands
+package com.github.Ringoame196.command
 
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
