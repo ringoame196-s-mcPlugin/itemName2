@@ -1,7 +1,7 @@
 package com.github.Ringoame196
 
-import com.github.Ringoame196.commands.Command
-import com.github.Ringoame196.commands.TabComplete
+import com.github.Ringoame196.Commands.Command
+import com.github.Ringoame196.Commands.TabComplete
 import org.bukkit.plugin.java.JavaPlugin
 
 class Main : JavaPlugin() {

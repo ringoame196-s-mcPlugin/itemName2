@@ -1,7 +1,7 @@
-package com.github.Ringoame196.commands
+package com.github.Ringoame196.Commands
 
-import com.github.Ringoame196.manager.ItemManager
-import com.github.Ringoame196.manager.PlayerManager
+import com.github.Ringoame196.Manager.ItemManager
+import com.github.Ringoame196.Manager.PlayerManager
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.Sound
@@ -61,8 +61,14 @@ class Command : CommandExecutor {
             "lore" to "説明",
             "customModelData" to "カスタムモデルデータ"
         )
-        val action = if (inputText == "!reset") { "${ChatColor.RED}リセット" } else { "変更" }
+
         player.playSound(player, Sound.BLOCK_ANVIL_USE, 1f, 1f)
-        player.sendMessage("${ChatColor.YELLOW}[itemName] ${categoryMap[category]}情報を${action}しました")
+        player.sendMessage(
+            if (inputText == "!reset") {
+                "${ChatColor.YELLOW}[itemName] ${categoryMap[category]}情報をリセットしました"
+            } else {
+                "${ChatColor.YELLOW}[itemName] ${categoryMap[category]}情報を変更しました"
+            }
+        )
     }
 }
