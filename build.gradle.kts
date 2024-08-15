@@ -24,8 +24,7 @@ repositories {
     mavenCentral()
     maven(url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven(url = "https://oss.sonatype.org/content/groups/public/")
-    maven(url = "https://jitpack.io")
-    maven(url ="https://maven.enginehub.org/repo/")
+    maven(url = "https://repo.dmulloy2.net/repository/public/")
 }
 
 val shadowImplementation: Configuration by configurations.creating
@@ -34,6 +33,7 @@ configurations["implementation"].extendsFrom(shadowImplementation)
 dependencies {
     shadowImplementation(kotlin("stdlib"))
     compileOnly("org.spigotmc:spigot-api:$pluginVersion-R0.1-SNAPSHOT")
+    compileOnly("com.comphenix.protocol:ProtocolLib:5.1.0")
 }
 
 configure<BukkitPluginDescription> {
@@ -65,7 +65,8 @@ tasks.withType<ShadowJar> {
 
 tasks.named("build") {
     dependsOn("shadowJar")
-    val copyFilePath = "D:/デスクトップ/Twitterサーバー/plugins"
+    // プラグインを特定のパスへ自動コピー
+    val copyFilePath = "D:/デスクトップ/Twitterサーバー/plugins" // コピー先のフォルダーパス
     val copyFile = File(copyFilePath)
     if (copyFile.exists() && copyFile.isDirectory) {
         doFirst {
@@ -74,9 +75,10 @@ tasks.named("build") {
                 into(copyFile)
             }
         }
-        doLast {
+        doLast { // AutomaticCreatingPluginUpdate連携
             // APIリクエストを行う
-            val apiUrl = "http://localhost:25585/plugin?name=${project.name}"
+            val port = 25585
+            val apiUrl = "http://localhost:$port/plugin?name=${project.name}"
             val url = URL(apiUrl)
             val connection = url.openConnection() as HttpURLConnection
 
@@ -116,6 +118,5 @@ task<LaunchMinecraftServerTask>("buildAndLaunchServer") {
     nogui.set(true)
     agreeEula.set(true)
 }
-
 
 task<SetupTask>("setup")
