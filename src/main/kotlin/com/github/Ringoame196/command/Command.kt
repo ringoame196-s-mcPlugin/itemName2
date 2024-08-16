@@ -42,9 +42,13 @@ class Command : CommandExecutor {
         val inputText = args[1]
 
         when (category) {
-            "display" -> itemManager.setDisplay(meta, inputText)
-            "lore" -> itemManager.setLore(meta, args)
-            "customModelData" -> itemManager.setCustomModelData(meta, inputText)
+            CommandConst.itemChangeTypeDisplay -> itemManager.setDisplay(meta, inputText)
+            CommandConst.itemChangeTypeLore -> itemManager.setLore(meta, args)
+            CommandConst.itemChangeTypeCustomModelData -> itemManager.setCustomModelData(meta, inputText)
+            else -> {
+                player.sendMessage("${ChatColor.RED}[エラー] 入力が間違っています")
+                return true
+            }
         }
 
         replaceItemMeta(player, meta) // アイテム情報を置き換える
@@ -57,14 +61,14 @@ class Command : CommandExecutor {
     }
     private fun sendChangeMessage(player: Player, category: String, inputText: String) {
         val categoryMap = mapOf(
-            "display" to "アイテム名",
-            "lore" to "説明",
-            "customModelData" to "カスタムモデルデータ"
+            CommandConst.itemChangeTypeDisplay to "アイテム名",
+            CommandConst.itemChangeTypeLore to "説明",
+            CommandConst.itemChangeTypeCustomModelData to "カスタムモデルデータ"
         )
 
         player.playSound(player, Sound.BLOCK_ANVIL_USE, 1f, 1f)
         player.sendMessage(
-            if (inputText == "!reset") {
+            if (inputText == CommandConst.resetCommand) {
                 "${ChatColor.YELLOW}[itemName] ${categoryMap[category]}情報をリセットしました"
             } else {
                 "${ChatColor.YELLOW}[itemName] ${categoryMap[category]}情報を変更しました"

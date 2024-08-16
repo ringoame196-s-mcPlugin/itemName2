@@ -12,17 +12,17 @@ class TabComplete : TabCompleter {
         if (player !is Player) { return mutableListOf() } // プレイヤー以外 処理をしない
         val playerItem = player.inventory.itemInMainHand
         return when (args.size) {
-            1 -> mutableListOf("display", "lore", "customModelData")
+            1 -> mutableListOf(CommandConst.itemChangeTypeDisplay, CommandConst.itemChangeTypeLore, CommandConst.itemChangeTypeCustomModelData)
             else -> acquisitionItemMeta(playerItem, args.size - 2, args[0])
         }
     }
     private fun acquisitionItemMeta(item: ItemStack, number: Int, type: String): MutableList<String> {
-        val tabList = mutableListOf("!reset")
+        val tabList = mutableListOf(CommandConst.resetCommand)
         val itemMeta = item.itemMeta ?: return tabList
         when (type) {
-            "display" -> tabList.add(itemMeta.displayName.replace("§", "&")) // 色変え対応
-            "lore" -> tabList.add(acquisitionLore(itemMeta, number).replace("§", "&")) // 色変え対応
-            "customModelData" -> tabList.add(acquisitionCustomModelData(itemMeta))
+            CommandConst.itemChangeTypeDisplay -> tabList.add(itemMeta.displayName.replace("§", "&")) // 色変え対応
+            CommandConst.itemChangeTypeLore -> tabList.add(acquisitionLore(itemMeta, number).replace("§", "&")) // 色変え対応
+            CommandConst.itemChangeTypeCustomModelData -> tabList.add(acquisitionCustomModelData(itemMeta))
         }
         return tabList
     }
