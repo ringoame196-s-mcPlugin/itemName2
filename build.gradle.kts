@@ -1,6 +1,4 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import dev.s7a.gradle.minecraft.server.tasks.LaunchMinecraftServerTask
-import dev.s7a.gradle.minecraft.server.tasks.LaunchMinecraftServerTask.JarUrl
 import groovy.lang.Closure
 import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
 import java.net.HttpURLConnection
@@ -66,7 +64,7 @@ tasks.withType<ShadowJar> {
 tasks.named("build") {
     dependsOn("shadowJar")
     // プラグインを特定のパスへ自動コピー
-    val copyFilePath = "D:/デスクトップ/Twitterサーバー/plugins" // コピー先のフォルダーパス
+    val copyFilePath = "M:/TwitterServer/plugins/" // コピー先のフォルダーパス
     val copyFile = File(copyFilePath)
     if (copyFile.exists() && copyFile.isDirectory) {
         doFirst {
@@ -78,7 +76,8 @@ tasks.named("build") {
         doLast { // AutomaticCreatingPluginUpdate連携
             // APIリクエストを行う
             val port = 25585
-            val apiUrl = "http://localhost:$port/plugin?name=${project.name}"
+            val ip = "192.168.0.21"
+            val apiUrl = "http://$ip:$port/plugin?name=${project.name}"
             val url = URL(apiUrl)
             val connection = url.openConnection() as HttpURLConnection
 
@@ -101,22 +100,6 @@ tasks.named("build") {
             }
         }
     }
-}
-
-task<LaunchMinecraftServerTask>("buildAndLaunchServer") {
-    dependsOn("build")
-    doFirst {
-        copy {
-            from(buildDir.resolve("libs/${project.name}.jar"))
-            into(buildDir.resolve("MinecraftServer/plugins"))
-        }
-    }
-
-    jarUrl.set(JarUrl.Paper(pluginVersion))
-    jarName.set("server.jar")
-    serverDirectory.set(buildDir.resolve("MinecraftServer"))
-    nogui.set(true)
-    agreeEula.set(true)
 }
 
 task<SetupTask>("setup")
